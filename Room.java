@@ -19,6 +19,7 @@ public class Room
     public Room southExit;
     public Room eastExit;
     public Room westExit;
+    public Room southEastExit;
 
     /**
      * Create a room described "description". Initially, it has
@@ -39,12 +40,14 @@ public class Room
      * @param south The south exit.
      * @param west The west exit.
      */
-    public void setExits(Room north, Room east, Room south, Room west) 
+    public void setExits(Room north, Room east, Room southEast, Room south, Room west) 
     {
         if(north != null)
             northExit = north;
         if(east != null)
             eastExit = east;
+        if (southEast != null)
+            southEastExit = southEast;
         if(south != null)
             southExit = south;
         if(west != null)
