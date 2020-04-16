@@ -46,13 +46,24 @@ public class Game
         mazmorra = new Room("una mazmorra oculta");
 
         // Creamos el mapa (virtualmente hablando)
-        patio.setExits(salaDelTrono, null, null, null, null);
-        salaDelTrono.setExits(null, granSalon, null, patio, null);
-        granSalon.setExits(null, pasillo, null, granComedor, salaDelTrono);
-        granComedor.setExits(granSalon, null, null, null, null);
-        pasillo.setExits(aseo, null, mazmorra, null, granSalon);
-        aseo.setExits(null, null, null, pasillo, null);
-        mazmorra.setExits(null, null, null, null, null);
+        // Salidas del patio
+        patio.setExit("north", salaDelTrono);
+        // Salidas de la sala del trono
+        salaDelTrono.setExit("east", granSalon);
+        salaDelTrono.setExit("south", patio);
+        // Salidas del gran salon
+        granSalon.setExit("east", pasillo);
+        granSalon.setExit("south", granComedor);
+        granSalon.setExit("west", salaDelTrono);
+        // Salidas del gran comedor
+        granComedor.setExit("north", granSalon);
+        // Salidas del pasillo
+        pasillo.setExit("north", aseo);
+        pasillo.setExit("southEast", mazmorra);
+        pasillo.setExit("west", granSalon);
+        // Salidas del aseo
+        aseo.setExit("south", pasillo);
+        // Salidas de la mazmorra
 
         currentRoom = patio;  // Comienza el juego en el patio del castillo
     }
@@ -146,23 +157,7 @@ public class Game
 
         String direction = command.getSecondWord();
 
-        // Try to leave current room.
-        Room nextRoom = null;
-        if(direction.equals("north")) {
-            nextRoom = currentRoom.northExit;
-        }
-        if(direction.equals("east")) {
-            nextRoom = currentRoom.eastExit;
-        }
-        if(direction.equals("southEast")) {
-            nextRoom = currentRoom.southEastExit;
-        }
-        if(direction.equals("south")) {
-            nextRoom = currentRoom.southExit;
-        }
-        if(direction.equals("west")) {
-            nextRoom = currentRoom.westExit;
-        }
+        Room nextRoom = currentRoom.getExit(direction);
 
         if (nextRoom == null) {
             System.out.println("There is no door!");
@@ -191,22 +186,7 @@ public class Game
 
     private void printLocationInfo() {
         System.out.println("Estás en " + currentRoom.getDescription());
-        System.out.print("Salidas: ");
-        if(currentRoom.northExit != null) {
-            System.out.print("north ");
-        }
-        if(currentRoom.eastExit != null) {
-            System.out.print("east ");
-        }
-        if(currentRoom.southEastExit != null) {
-            System.out.print("southEast ");
-        }
-        if(currentRoom.southExit != null) {
-            System.out.print("south ");
-        }
-        if(currentRoom.westExit != null) {
-            System.out.print("west ");
-        }
+        System.out.print(currentRoom.getExitString());
         System.out.println();
     }
 }
