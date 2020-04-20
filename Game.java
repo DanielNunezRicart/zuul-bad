@@ -34,7 +34,7 @@ public class Game
      */
     private void createRooms()
     {
-        Room patio, salaDelTrono, granSalon, granComedor, pasillo, aseo, mazmorra;
+        Room patio, salaDelTrono, granSalon, granComedor, pasillo, aseo, mazmorra, aposentosCapGuardiaReal, pasilloSecreto;
 
         // Crea las salas
         patio = new Room("patio principal del castillo");
@@ -44,6 +44,8 @@ public class Game
         pasillo = new Room("un largo pasillo");
         aseo = new Room("los baños");
         mazmorra = new Room("una mazmorra oculta");
+        aposentosCapGuardiaReal = new Room("los aposentos privados del Capitán de la Guardia Real, al noroeste de la sala del trono");
+        pasilloSecreto = new Room("un pasillo secreto al noreste de la mazmorra");
 
         // Creamos el mapa (virtualmente hablando)
         // Salidas del patio
@@ -51,6 +53,7 @@ public class Game
         // Salidas de la sala del trono
         salaDelTrono.setExit("east", granSalon);
         salaDelTrono.setExit("south", patio);
+        salaDelTrono.setExit("northWest", aposentosCapGuardiaReal);
         // Salidas del gran salon
         granSalon.setExit("east", pasillo);
         granSalon.setExit("south", granComedor);
@@ -64,6 +67,12 @@ public class Game
         // Salidas del aseo
         aseo.setExit("south", pasillo);
         // Salidas de la mazmorra
+        mazmorra.setExit("northWest", pasillo);
+        mazmorra.setExit("northEast", pasilloSecreto);
+        // Salidas de los aposentos del capitan de la guardia real
+        aposentosCapGuardiaReal.setExit("southEast", salaDelTrono);
+        // Salidas del pasillo secreto
+        pasilloSecreto.setExit("southWest", mazmorra);
 
         currentRoom = patio;  // Comienza el juego en el patio del castillo
     }
