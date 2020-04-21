@@ -135,6 +135,9 @@ public class Game
         else if (commandWord.equals("look")) {
             look();
         }
+        else if (commandWord.equals("eat")) {
+            eat();
+        }
 
         return wantToQuit;
     }
@@ -211,6 +214,13 @@ public class Game
      * sala en la que está.
      */
     private void look() {
-        System.out.print(currentRoom.getLongDescription());
+        System.out.println(currentRoom.getLongDescription());
+    }
+
+    /**
+     * Permite utilizar el comando eat.
+     */
+    private void eat() {
+        System.out.println("Acabas de comer y ya no tienes hambre");   
     }
 }
