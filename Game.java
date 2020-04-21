@@ -194,8 +194,7 @@ public class Game
     }
 
     private void printLocationInfo() {
-        System.out.println("Estás en " + currentRoom.getDescription());
-        System.out.print(currentRoom.getExitString());
+        System.out.print(currentRoom.getLongDescription());
         System.out.println();
     }
 }

@@ -1,5 +1,4 @@
 import java.util.HashMap;
-import java.util.ArrayList;
 
 /**
  * Class Room - a room in an adventure game.
@@ -59,11 +58,11 @@ public class Room
      */
     public String getExitString() {
         String textoExits = "Exits: ";
-        
+
         String direcciones = salidas.keySet().toString();
         direcciones = direcciones.substring(1, direcciones.length() - 1).replaceAll(",", "");
         textoExits += direcciones;
-        
+
         return textoExits;
     }
 
@@ -75,5 +74,18 @@ public class Room
      */
     public void setExit(String direccion, Room sala) {
         salidas.put(direccion, sala);
+    }
+
+    /**
+     * Devuelve un texto con la descripcion completa de la habitacion, que 
+     * incluye la descripcion corta de la sala y las salidas de la misma. Por ejemplo:
+     *     You are in the lab
+     *     Exits: north west southwest
+     * @return Una descripcion completa de la habitacion incluyendo sus salidas
+     */
+    public String getLongDescription() {
+        String descripcionCompleta = "Estás en " + description + "\n";
+        descripcionCompleta += getExitString();
+        return descripcionCompleta;
     }
 }
