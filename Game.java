@@ -132,6 +132,9 @@ public class Game
         else if (commandWord.equals("quit")) {
             wantToQuit = quit(command);
         }
+        else if (commandWord.equals("look")) {
+            look();
+        }
 
         return wantToQuit;
     }
@@ -193,8 +196,21 @@ public class Game
         }
     }
 
+    /**
+     * Imprime por pantalla la descripción de la sala actual y sus 
+     * salidas.
+     */
     private void printLocationInfo() {
         System.out.print(currentRoom.getLongDescription());
         System.out.println();
+    }
+
+    /**
+     * Permite al jugador utilizar el comando look, que
+     * nos muestra por pantalla la LongDescription de la 
+     * sala en la que está.
+     */
+    private void look() {
+        System.out.print(currentRoom.getLongDescription());
     }
 }
