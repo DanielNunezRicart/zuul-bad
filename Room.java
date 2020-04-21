@@ -58,10 +58,10 @@ public class Room
      */
     public String getExitString() {
         String textoExits = "Exits: ";
-
-        String direcciones = salidas.keySet().toString();
-        direcciones = direcciones.substring(1, direcciones.length() - 1).replaceAll(",", "");
-        textoExits += direcciones;
+        
+        for (String salida : salidas.keySet()) {
+            textoExits += salida + " ";
+        }
 
         return textoExits;
     }
