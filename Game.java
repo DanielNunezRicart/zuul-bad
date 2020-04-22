@@ -19,6 +19,7 @@ public class Game
 {
     private Parser parser;
     private Room currentRoom;
+    private Room lastRoom;
 
     /**
      * Create the game and initialise its internal map.
@@ -92,6 +93,7 @@ public class Game
         pasilloSecreto.setExit("southWest", mazmorra);
 
         currentRoom = patio;  // Comienza el juego en el patio del castillo
+        lastRoom = null;
     }
 
     /**
@@ -155,6 +157,9 @@ public class Game
         else if (commandWord.equals("eat")) {
             eat();
         }
+        else if (commandWord.equals("back")) {
+            back();
+        }
 
         return wantToQuit;
     }
@@ -195,6 +200,7 @@ public class Game
             System.out.println("There is no door!");
         }
         else {
+            lastRoom = currentRoom;
             currentRoom = nextRoom;
             printLocationInfo();
         }
@@ -239,5 +245,18 @@ public class Game
      */
     private void eat() {
         System.out.println("Acabas de comer y ya no tienes hambre");   
+    }
+    
+    /**
+     * Nos devuelve a la habitación anterior. Excepto que acabemos de empezar el juego
+     * o ejecutemos dos "back" seguidos.
+     */
+    private void back() {
+        if (lastRoom != null && lastRoom != currentRoom) {
+            currentRoom = lastRoom;
+            printLocationInfo();
+        } else {
+            System.out.println("No puedes hacer eso");
+        }
     }
 }
