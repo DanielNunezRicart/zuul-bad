@@ -36,22 +36,34 @@ public class Game
     {
         Room patio, salaDelTrono, granSalon, granComedor, pasillo, aseo, mazmorra, aposentosCapGuardiaReal, pasilloSecreto;
 
-        // Crea los objetos
-        Item cuchillo = new Item("Un cuchillo de cocina", 1);
-        Item amuletoExtraño = new Item("Un amuleto muy raro que te provoca escalofríos", 1);
-        Item cartaInculpatoria = new Item("Carta inculpatoria encontrada en los aposentos del Capitán de la Guardia Real", 1);
-        
         // Crea las salas
-        patio = new Room("patio principal del castillo", null);
-        salaDelTrono = new Room("la sala del trono", null);
-        granSalon = new Room("el gran salón", null);
-        granComedor = new Room("el gran comedor", cuchillo);
-        pasillo = new Room("un largo pasillo", null);
-        aseo = new Room("los baños", null);
-        mazmorra = new Room("una mazmorra oculta", amuletoExtraño);
-        aposentosCapGuardiaReal = new Room("los aposentos privados del Capitán de la Guardia Real, al noroeste de la sala del trono", cartaInculpatoria);
-        pasilloSecreto = new Room("un pasillo secreto al noreste de la mazmorra", null);
+        patio = new Room("patio principal del castillo");
+        salaDelTrono = new Room("la sala del trono");
+        granSalon = new Room("el gran salón");
+        granComedor = new Room("el gran comedor");
+        pasillo = new Room("un largo pasillo");
+        aseo = new Room("los baños");
+        mazmorra = new Room("una mazmorra oculta");
+        aposentosCapGuardiaReal = new Room("los aposentos privados del Capitán de la Guardia Real, al noroeste de la sala del trono");
+        pasilloSecreto = new Room("un pasillo secreto al noreste de la mazmorra");
 
+        // Creamos los objetos
+        Item cuchillo = new Item("Un cuchillo de cocina", 1);
+        Item amuletoExtrano = new Item("Un amuleto muy raro que te provoca escalofríos", 1);
+        Item cartaInculpatoria = new Item("Carta inculpatoria encontrada en los aposentos del Capitán de la Guardia Real", 1);
+        Item vendasEnsangrentadas = new Item("Vendas empapadas en sangre encontradas en los baños", 2);
+        Item anillo = new Item("Anillo de oro con un rubí incrustado", 1);
+        Item ganzua = new Item("Una ganzúa", 1);
+        
+        // Y ahora los añadimos a sus salas correspondientes
+        patio.addItem(ganzua);
+        granComedor.addItem(cuchillo);
+        aseo.addItem(vendasEnsangrentadas);
+        aseo.addItem(anillo);
+        mazmorra.addItem(amuletoExtrano);
+        aposentosCapGuardiaReal.addItem(cartaInculpatoria);
+        
+        
         // Creamos el mapa (virtualmente hablando)
         // Salidas del patio
         patio.setExit("north", salaDelTrono);
