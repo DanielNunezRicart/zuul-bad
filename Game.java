@@ -36,16 +36,21 @@ public class Game
     {
         Room patio, salaDelTrono, granSalon, granComedor, pasillo, aseo, mazmorra, aposentosCapGuardiaReal, pasilloSecreto;
 
+        // Crea los objetos
+        Item cuchillo = new Item("Un cuchillo de cocina", 1);
+        Item amuletoExtraño = new Item("Un amuleto muy raro que te provoca escalofríos", 1);
+        Item cartaInculpatoria = new Item("Carta inculpatoria encontrada en los aposentos del Capitán de la Guardia Real", 1);
+        
         // Crea las salas
-        patio = new Room("patio principal del castillo", "", 0);
-        salaDelTrono = new Room("la sala del trono", "", 0);
-        granSalon = new Room("el gran salón", "", 0);
-        granComedor = new Room("el gran comedor", "Un cuchillo de cocina", 1);
-        pasillo = new Room("un largo pasillo", "", 0);
-        aseo = new Room("los baños", "", 0);
-        mazmorra = new Room("una mazmorra oculta", "Un amuleto extraño", 1);
-        aposentosCapGuardiaReal = new Room("los aposentos privados del Capitán de la Guardia Real, al noroeste de la sala del trono", "Una carta inculpatoria", 1);
-        pasilloSecreto = new Room("un pasillo secreto al noreste de la mazmorra", "", 0);
+        patio = new Room("patio principal del castillo", null);
+        salaDelTrono = new Room("la sala del trono", null);
+        granSalon = new Room("el gran salón", null);
+        granComedor = new Room("el gran comedor", cuchillo);
+        pasillo = new Room("un largo pasillo", null);
+        aseo = new Room("los baños", null);
+        mazmorra = new Room("una mazmorra oculta", amuletoExtraño);
+        aposentosCapGuardiaReal = new Room("los aposentos privados del Capitán de la Guardia Real, al noroeste de la sala del trono", cartaInculpatoria);
+        pasilloSecreto = new Room("un pasillo secreto al noreste de la mazmorra", null);
 
         // Creamos el mapa (virtualmente hablando)
         // Salidas del patio
