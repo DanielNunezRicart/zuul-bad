@@ -37,15 +37,15 @@ public class Game
         Room patio, salaDelTrono, granSalon, granComedor, pasillo, aseo, mazmorra, aposentosCapGuardiaReal, pasilloSecreto;
 
         // Crea las salas
-        patio = new Room("patio principal del castillo");
-        salaDelTrono = new Room("la sala del trono");
-        granSalon = new Room("el gran salón");
-        granComedor = new Room("el gran comedor");
-        pasillo = new Room("un largo pasillo");
-        aseo = new Room("los baños");
-        mazmorra = new Room("una mazmorra oculta");
-        aposentosCapGuardiaReal = new Room("los aposentos privados del Capitán de la Guardia Real, al noroeste de la sala del trono");
-        pasilloSecreto = new Room("un pasillo secreto al noreste de la mazmorra");
+        patio = new Room("patio principal del castillo", "", 0);
+        salaDelTrono = new Room("la sala del trono", "", 0);
+        granSalon = new Room("el gran salón", "", 0);
+        granComedor = new Room("el gran comedor", "Un cuchillo de cocina", 1);
+        pasillo = new Room("un largo pasillo", "", 0);
+        aseo = new Room("los baños", "", 0);
+        mazmorra = new Room("una mazmorra oculta", "Un amuleto extraño", 1);
+        aposentosCapGuardiaReal = new Room("los aposentos privados del Capitán de la Guardia Real, al noroeste de la sala del trono", "Una carta inculpatoria", 1);
+        pasilloSecreto = new Room("un pasillo secreto al noreste de la mazmorra", "", 0);
 
         // Creamos el mapa (virtualmente hablando)
         // Salidas del patio
