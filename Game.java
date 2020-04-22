@@ -1,3 +1,5 @@
+import java.util.Stack;
+
 /**
  *  This class is the main class of the "World of Zuul" application. 
  *  "World of Zuul" is a very simple, text based adventure game.  Users 
@@ -19,7 +21,7 @@ public class Game
 {
     private Parser parser;
     private Room currentRoom;
-    private Room lastRoom;
+    private Stack<Room> recorrido;
 
     /**
      * Create the game and initialise its internal map.
@@ -28,6 +30,7 @@ public class Game
     {
         createRooms();
         parser = new Parser();
+        recorrido = new Stack<>();
     }
 
     /**
@@ -55,7 +58,7 @@ public class Game
         Item vendasEnsangrentadas = new Item("Vendas empapadas en sangre encontradas en los baños", 2);
         Item anillo = new Item("Anillo de oro con un rubí incrustado", 1);
         Item ganzua = new Item("Una ganzúa", 1);
-        
+
         // Y ahora los añadimos a sus salas correspondientes
         patio.addItem(ganzua);
         granComedor.addItem(cuchillo);
@@ -63,8 +66,7 @@ public class Game
         aseo.addItem(anillo);
         mazmorra.addItem(amuletoExtrano);
         aposentosCapGuardiaReal.addItem(cartaInculpatoria);
-        
-        
+
         // Creamos el mapa (virtualmente hablando)
         // Salidas del patio
         patio.setExit("north", salaDelTrono);
@@ -93,7 +95,6 @@ public class Game
         pasilloSecreto.setExit("southWest", mazmorra);
 
         currentRoom = patio;  // Comienza el juego en el patio del castillo
-        lastRoom = null;
     }
 
     /**
@@ -200,7 +201,7 @@ public class Game
             System.out.println("There is no door!");
         }
         else {
-            lastRoom = currentRoom;
+            recorrido.add(currentRoom);
             currentRoom = nextRoom;
             printLocationInfo();
         }
@@ -246,14 +247,14 @@ public class Game
     private void eat() {
         System.out.println("Acabas de comer y ya no tienes hambre");   
     }
-    
+
     /**
      * Nos devuelve a la habitación anterior. Excepto que acabemos de empezar el juego
-     * o ejecutemos dos "back" seguidos.
+     * o hayamos rehecho nuestros pasos hasta el principio.
      */
     private void back() {
-        if (lastRoom != null && lastRoom != currentRoom) {
-            currentRoom = lastRoom;
+        if (!recorrido.empty()) {
+            currentRoom = recorrido.pop();
             printLocationInfo();
         } else {
             System.out.println("No puedes hacer eso");
