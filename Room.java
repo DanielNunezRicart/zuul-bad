@@ -107,4 +107,22 @@ public class Room
     public void addItem(Item objeto) {
         listaItems.add(objeto);
     }
+    
+    /**
+     * Devuelve una coleccion con todos los items de la sala
+     * 
+     * @return  Un ArrayList<Item> con todos los objetos que hay en la sala.
+     */
+    public ArrayList getListaItems() {
+        return listaItems;
+    }
+    
+    /**
+     * Elimina un item de la sala.
+     * 
+     * @param objeto    El objeto a eliminar del ArrayList.
+     */
+    public void removeItem(Item objeto) {
+        listaItems.remove(objeto);
+    }
 }

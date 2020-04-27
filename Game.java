@@ -1,4 +1,5 @@
 import java.util.Stack;
+import java.util.ArrayList;
 
 /**
  *  This class is the main class of the "World of Zuul" application. 
@@ -22,6 +23,9 @@ public class Game
     private Parser parser;
     private Room currentRoom;
     private Stack<Room> recorrido;
+    private ArrayList<Item> mochila;
+    private int pesoActual;
+    private int pesoMax;
 
     /**
      * Create the game and initialise its internal map.
@@ -31,6 +35,9 @@ public class Game
         createRooms();
         parser = new Parser();
         recorrido = new Stack<>();
+        mochila = new ArrayList<>();
+        pesoActual = 0;
+        pesoMax = 5;
     }
 
     /**
@@ -52,19 +59,20 @@ public class Game
         pasilloSecreto = new Room("un pasillo secreto al noreste de la mazmorra");
 
         // Creamos los objetos
-        Item cuchillo = new Item("Un cuchillo de cocina", 1);
-        Item amuletoExtrano = new Item("Un amuleto muy raro que te provoca escalofríos", 1);
-        Item cartaInculpatoria = new Item("Carta inculpatoria encontrada en los aposentos del Capitán de la Guardia Real", 1);
-        Item vendasEnsangrentadas = new Item("Vendas empapadas en sangre encontradas en los baños", 2);
-        Item anillo = new Item("Anillo de oro con un rubí incrustado", 1);
-        Item ganzua = new Item("Una ganzúa", 1);
+        Item cuchillo = new Item("cuchillo", "Un simlple cuchillo del banquete, está afilado", 1);
+        Item behelit = new Item("behelit", "Un amuleto muy raro que te provoca escalofríos", 1);
+        behelit.setAdquirible(false);
+        Item cartaInculpatoria = new Item("cartaInculpatoria", "Carta inculpatoria encontrada en los aposentos del Capitán de la Guardia Real", 1);
+        Item vendasEnsangrentadas = new Item("vendasEnsangrentadas", "Vendas empapadas en sangre encontradas en los baños", 2);
+        Item anillo = new Item("anillo", "Anillo de oro con un rubí incrustado", 1);
+        Item ganzua = new Item("ganzua","Una herramienta para abrir puertas", 1);
 
         // Y ahora los añadimos a sus salas correspondientes
         patio.addItem(ganzua);
         granComedor.addItem(cuchillo);
         aseo.addItem(vendasEnsangrentadas);
         aseo.addItem(anillo);
-        mazmorra.addItem(amuletoExtrano);
+        mazmorra.addItem(behelit);
         aposentosCapGuardiaReal.addItem(cartaInculpatoria);
 
         // Creamos el mapa (virtualmente hablando)
@@ -160,6 +168,15 @@ public class Game
         }
         else if (commandWord.equals("back")) {
             back();
+        }
+        else if (commandWord.equals("take")) {
+            take(command);
+        }
+        else if (commandWord.equals("drop")) {
+            drop(command);
+        }
+        else if (commandWord.equals("items")) {
+            items();
         }
 
         return wantToQuit;
@@ -258,6 +275,80 @@ public class Game
             printLocationInfo();
         } else {
             System.out.println("No puedes hacer eso");
+        }
+    }
+    
+    /**
+     * Método que nos permite ejecutar el comando "take". Coge un objeto de la
+     * sala y se lo guarda, siempre y cuando no sobrepasemos el peso maximo.
+     * 
+     * @param command   El comando que se ha introducido
+     */
+    private void take(Command command) {
+        ArrayList<Item> objetosSala = currentRoom.getListaItems();
+        boolean nombreCorrecto = false;
+        
+        for (int i = 0; i < objetosSala.size(); i++) {
+            Item item = objetosSala.get(i);
+            if (item.getItemId().equals(command.getSecondWord())) {
+                if ((pesoActual + item.getPesoItem()) <= pesoMax && item.getAdquirible()) {
+                    mochila.add(item);
+                    pesoActual += item.getPesoItem();
+                    currentRoom.removeItem(item);
+                    nombreCorrecto = true;
+                    System.out.println("Has cogido " + item.getItemId());
+                } else if (!item.getAdquirible()) {
+                    System.out.println("No puedes coger ese objeto, de momento...");
+                    nombreCorrecto = true;
+                } else {
+                    System.out.println("No puedes coger este objeto, llevas demasiado peso");
+                    nombreCorrecto = true;
+                }
+            }
+        }
+        
+        //Esta parte controla si se ha metido mal el nombre del objeto
+        if (nombreCorrecto == false) {
+            System.out.println("No ves ese objeto por ninguna parte.");
+        }
+    }
+    
+    /**
+     * Ejecuta el comando "drop". Deja un objeto que haya cogido el jugador/a
+     * en la sala actual.
+     * 
+     * @param command   El comando que se ha introducido
+     */
+    private void drop(Command command) {
+        boolean nombreCorrecto = false;
+        
+        for (int i = 0; i < mochila.size(); i++) {
+            Item item = mochila.get(i);
+            if (item.getItemId().equals(command.getSecondWord())) {
+                currentRoom.addItem(item);
+                mochila.remove(item);
+                nombreCorrecto = true;
+                System.out.println(item.getItemId() + " se ha dejado en la sala.");
+            }
+        }
+        
+        if (nombreCorrecto == false) {
+            System.out.println("¡No tienes ese objeto!");
+        }
+    }
+    
+    /**
+     * Ejecuta el comando items. Muestra por pantalla la información de los objetos que 
+     * ha recogido el jugador/a. Si no ha recogido ninguno, muestra entonces que no se 
+     * tiene ningún objeto.
+     */
+    private void items() {
+        if (mochila.isEmpty()) {
+            System.out.println("No tienes objetos");
+        } else {
+            for (Item item : mochila) {
+                System.out.println(item.getItemInfo());
+            }
         }
     }
 }
