@@ -117,7 +117,7 @@ public class Player
             System.out.println("No ves ese objeto por ninguna parte.");
         }
     }
-    
+
     /**
      * Ejecuta el comando items. Muestra por pantalla la información de los objetos que 
      * ha recogido el jugador. Si no ha recogido ninguno, muestra entonces que no se 
@@ -131,6 +131,33 @@ public class Player
                 System.out.println(item.getItemInfo());
             }
             System.out.println("Peso total: " + pesoActual);
+        }
+    }
+
+    /**
+     * Ejecuta el comando "drop". Deja un objeto que haya cogido el jugador
+     * en la sala actual.
+     * 
+     * @param command   El comando que se ha introducido
+     */
+    public void drop(Command command) {
+        Item item = null;
+
+        if (!inventario.isEmpty()) {
+            for (int i = 0; i < inventario.size() && item == null; i++) {
+                item = inventario.get(i);
+                if (item.getId().equals(command.getSecondWord())) {
+                    currentRoom.addItem(item);
+                    inventario.remove(item);
+                    pesoActual -= item.getPesoItem();
+                    System.out.println(item.getId() + " se ha dejado en la sala.");
+                }
+            }
+            if (item == null) {
+                System.out.println("¡No tienes ese objeto!");
+            }
+        } else {
+            System.out.println("¡No tienes objetos!");
         }
     }
 }
