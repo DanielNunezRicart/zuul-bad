@@ -107,4 +107,32 @@ public class Room
     public void addItem(Item objeto) {
         listaItems.add(objeto);
     }
+    
+    /**
+     * Método que devuelve un objeto pasado por parámetro (si está en la sala),
+     * o null si no lo está.
+     * 
+     * @param objeto    El id del objeto que queremos devolver.
+     * @return  El objeto buscado o null si no existe en esta sala.
+     */
+    public Item getItem(String objeto) {
+        Item item = null;
+        
+        for (int i = 0; i < listaItems.size() && item == null; i++) {
+            if (listaItems.get(i).getId().equals(objeto)) {
+                item = listaItems.get(i);
+            }
+        }
+        
+        return item;
+    }
+    
+    /**
+     * Elimina un item de la sala.
+     * 
+     * @param objeto    El objeto que se pretende eliminar.
+     */
+    public void removeItem(Item objeto) {
+        listaItems.remove(objeto);
+    }
 }
