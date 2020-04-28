@@ -20,9 +20,8 @@ import java.util.Stack;
 public class Game 
 {
     private Parser parser;
-    private Room currentRoom;
-    private Stack<Room> recorrido;
-
+    private Player jugador;
+    
     /**
      * Create the game and initialise its internal map.
      */
@@ -30,13 +29,14 @@ public class Game
     {
         createRooms();
         parser = new Parser();
-        recorrido = new Stack<>();
+        jugador = new Player();
+        jugador.setCurrentRoom(createRooms());
     }
 
     /**
      * Create all the rooms and link their exits together.
      */
-    private void createRooms()
+    private Room createRooms()
     {
         Room patio, salaDelTrono, granSalon, granComedor, pasillo, aseo, mazmorra, aposentosCapGuardiaReal, pasilloSecreto;
 
@@ -93,8 +93,9 @@ public class Game
         aposentosCapGuardiaReal.setExit("southEast", salaDelTrono);
         // Salidas del pasillo secreto
         pasilloSecreto.setExit("southWest", mazmorra);
-
-        currentRoom = patio;  // Comienza el juego en el patio del castillo
+        
+        // El juego comienza en el patio
+        return patio;
     }
 
     /**
@@ -125,7 +126,7 @@ public class Game
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
         System.out.println("Type 'help' if you need help.");
         System.out.println();
-        printLocationInfo();
+        jugador.look();
     }
 
     /**
@@ -147,19 +148,19 @@ public class Game
             printHelp();
         }
         else if (commandWord.equals("go")) {
-            goRoom(command);
+            jugador.goRoom(command);
         }
         else if (commandWord.equals("quit")) {
             wantToQuit = quit(command);
         }
         else if (commandWord.equals("look")) {
-            look();
+            jugador.look();
         }
         else if (commandWord.equals("eat")) {
-            eat();
+            jugador.eat();
         }
         else if (commandWord.equals("back")) {
-            back();
+            jugador.back();
         }
 
         return wantToQuit;
@@ -181,31 +182,7 @@ public class Game
         System.out.println(parser.showCommands());
     }
 
-    /**
-     * Try to go in one direction. If there is an exit, enter
-     * the new room, otherwise print an error message.
-     */
-    private void goRoom(Command command) 
-    {
-        if(!command.hasSecondWord()) {
-            // if there is no second word, we don't know where to go...
-            System.out.println("Go where?");
-            return;
-        }
-
-        String direction = command.getSecondWord();
-
-        Room nextRoom = currentRoom.getExit(direction);
-
-        if (nextRoom == null) {
-            System.out.println("There is no door!");
-        }
-        else {
-            recorrido.add(currentRoom);
-            currentRoom = nextRoom;
-            printLocationInfo();
-        }
-    }
+    
 
     /** 
      * "Quit" was entered. Check the rest of the command to see
@@ -220,44 +197,6 @@ public class Game
         }
         else {
             return true;  // signal that we want to quit
-        }
-    }
-
-    /**
-     * Imprime por pantalla la descripción de la sala actual y sus 
-     * salidas.
-     */
-    private void printLocationInfo() {
-        System.out.print(currentRoom.getLongDescription());
-        System.out.println();
-    }
-
-    /**
-     * Permite al jugador utilizar el comando look, que
-     * nos muestra por pantalla la LongDescription de la 
-     * sala en la que está.
-     */
-    private void look() {
-        System.out.println(currentRoom.getLongDescription());
-    }
-
-    /**
-     * Permite utilizar el comando eat.
-     */
-    private void eat() {
-        System.out.println("Acabas de comer y ya no tienes hambre");   
-    }
-
-    /**
-     * Nos devuelve a la habitación anterior. Excepto que acabemos de empezar el juego
-     * o hayamos rehecho nuestros pasos hasta el principio.
-     */
-    private void back() {
-        if (!recorrido.empty()) {
-            currentRoom = recorrido.pop();
-            printLocationInfo();
-        } else {
-            System.out.println("No puedes hacer eso");
         }
     }
 }
