@@ -13,6 +13,7 @@ public class Item
     private String id;
     private String descripcion;
     private int peso;
+    private boolean adquirible;
 
     /**
      * Constructor de la clase Item.
@@ -27,6 +28,7 @@ public class Item
         id = idItem;
         descripcion = descripcionItem;
         peso = pesoItem;
+        adquirible = true;
     }
 
     /**
@@ -51,10 +53,27 @@ public class Item
     }
     
     /**
+     * @return  Devuelve un booleano que indica si puedes añadir este objeto
+     * a tu inventario.
+     */
+    public boolean getAdquirible() {
+        return adquirible;
+    }
+    
+    /**
      * @return  Toda la información referente al objeto
      */
     public String getItemInfo() {
         String itemInfo = id +": " + descripcion + " (peso " + peso + ")";
         return itemInfo;
+    }
+    
+    /**
+     * Cambia el valor del atributo adquirible (boolean).
+     * 
+     * @param valor Booleano que indica el nuevo valor del atributo adquirible
+     */
+    public void setAdquirible(boolean valor) {
+        adquirible = valor;
     }
 }

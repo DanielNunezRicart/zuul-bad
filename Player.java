@@ -104,10 +104,12 @@ public class Player
     public void take(Command command) {
         Item item = currentRoom.getItem(command.getSecondWord());
 
-        if (item != null) {
+        if (item != null && item.getAdquirible()) {
             inventario.add(item);
             currentRoom.removeItem(item);
             System.out.println("Has cogido " + item.getId());
+        } else if (!item.getAdquirible()) {
+            System.out.println("No puedes coger ese objeto, de momento...");
         } else {
             System.out.println("No ves ese objeto por ninguna parte.");
         }

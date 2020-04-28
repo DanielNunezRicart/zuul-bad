@@ -57,6 +57,7 @@ public class Game
         // Creamos los objetos
         Item cuchillo = new Item("cuchillo", "Un cuchillo de cocina", 1);
         Item behelit = new Item("behelit", "Extraño amuleto que te provoca escalofríos", 1);
+        behelit.setAdquirible(false);
         Item cartaInculpatoria = new Item("cartaInculpatoria", "Carta sospechosa encontrada en los aposentos del Capitán de la Guardia Real", 1);
         Item vendasEnsangrentadas = new Item("vendasEnsangrentadas", "Vendas empapadas en sangre encontradas en los baños", 2);
         Item anillo = new Item("anillo", "Anillo de oro con un rubí incrustado", 1);
