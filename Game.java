@@ -34,7 +34,10 @@ public class Game
     }
 
     /**
-     * Create all the rooms and link their exits together.
+     * Crea todas las salas y los objetos que habrá en cada una de ellas.
+     * Además las une creando las salidas que tienen hacia las demás.
+     * 
+     * @return  La sala en la que comienza el juego
      */
     private Room createRooms()
     {
@@ -52,19 +55,20 @@ public class Game
         pasilloSecreto = new Room("un pasillo secreto al noreste de la mazmorra");
 
         // Creamos los objetos
-        Item cuchillo = new Item("Un cuchillo de cocina", 1);
-        Item amuletoExtrano = new Item("Un amuleto muy raro que te provoca escalofríos", 1);
-        Item cartaInculpatoria = new Item("Carta inculpatoria encontrada en los aposentos del Capitán de la Guardia Real", 1);
-        Item vendasEnsangrentadas = new Item("Vendas empapadas en sangre encontradas en los baños", 2);
-        Item anillo = new Item("Anillo de oro con un rubí incrustado", 1);
-        Item ganzua = new Item("Una ganzúa", 1);
+        Item cuchillo = new Item("cuchillo", "Un cuchillo de cocina", 1);
+        Item behelit = new Item("behelit", "Extraño amuleto que te provoca escalofríos", 1);
+        behelit.setAdquirible(false);
+        Item cartaInculpatoria = new Item("cartaInculpatoria", "Carta sospechosa encontrada en los aposentos del Capitán de la Guardia Real", 1);
+        Item vendasEnsangrentadas = new Item("vendasEnsangrentadas", "Vendas empapadas en sangre encontradas en los baños", 2);
+        Item anillo = new Item("anillo", "Anillo de oro con un rubí incrustado", 1);
+        Item ganzua = new Item("ganzua", "Herramienta para abrir cerraduras", 1);
 
         // Y ahora los añadimos a sus salas correspondientes
         patio.addItem(ganzua);
         granComedor.addItem(cuchillo);
         aseo.addItem(vendasEnsangrentadas);
         aseo.addItem(anillo);
-        mazmorra.addItem(amuletoExtrano);
+        mazmorra.addItem(behelit);
         aposentosCapGuardiaReal.addItem(cartaInculpatoria);
 
         // Creamos el mapa (virtualmente hablando)
@@ -161,6 +165,15 @@ public class Game
         }
         else if (commandWord.equals("back")) {
             jugador.back();
+        }
+        else if (commandWord.equals("take")) {
+            jugador.take(command);
+        }
+        else if (commandWord.equals("items")) {
+            jugador.items();
+        }
+        else if (commandWord.equals("drop")) {
+            jugador.drop(command);
         }
 
         return wantToQuit;
