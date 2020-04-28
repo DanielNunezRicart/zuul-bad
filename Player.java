@@ -14,6 +14,7 @@ public class Player
     private Room currentRoom;
     private Stack<Room> recorrido; 
     private ArrayList<Item> inventario;
+    private int pesoActual;
 
     /**
      * Constructor de la clase Player
@@ -22,6 +23,7 @@ public class Player
     {
         recorrido = new Stack<>();
         inventario = new ArrayList<>();
+        pesoActual = 0;
     }
 
     /**
@@ -108,10 +110,27 @@ public class Player
             inventario.add(item);
             currentRoom.removeItem(item);
             System.out.println("Has cogido " + item.getId());
-        } else if (!item.getAdquirible()) {
+            pesoActual += item.getPesoItem();
+        } else if (item != null &&!item.getAdquirible()) {
             System.out.println("No puedes coger ese objeto, de momento...");
-        } else {
+        } else if (item == null) {
             System.out.println("No ves ese objeto por ninguna parte.");
+        }
+    }
+    
+    /**
+     * Ejecuta el comando items. Muestra por pantalla la información de los objetos que 
+     * ha recogido el jugador. Si no ha recogido ninguno, muestra entonces que no se 
+     * tiene ningún objeto.
+     */
+    public void items() {
+        if (inventario.isEmpty()) {
+            System.out.println("No tienes objetos en el inventario");
+        } else {
+            for (Item item : inventario) {
+                System.out.println(item.getItemInfo());
+            }
+            System.out.println("Peso total: " + pesoActual);
         }
     }
 }

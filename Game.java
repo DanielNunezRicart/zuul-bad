@@ -169,6 +169,9 @@ public class Game
         else if (commandWord.equals("take")) {
             jugador.take(command);
         }
+        else if (commandWord.equals("items")) {
+            jugador.items();
+        }
 
         return wantToQuit;
     }
