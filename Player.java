@@ -15,7 +15,8 @@ public class Player
     private Stack<Room> recorrido; 
     private ArrayList<Item> inventario;
     private int pesoActual;
-
+    private int pesoMax;
+    
     /**
      * Constructor de la clase Player
      */
@@ -24,6 +25,7 @@ public class Player
         recorrido = new Stack<>();
         inventario = new ArrayList<>();
         pesoActual = 0;
+        pesoMax = 5;
     }
 
     /**
@@ -106,11 +108,13 @@ public class Player
     public void take(Command command) {
         Item item = currentRoom.getItem(command.getSecondWord());
 
-        if (item != null && item.getAdquirible()) {
+        if (item != null && item.getAdquirible() && (pesoActual + item.getPesoItem()) <= pesoMax) {
             inventario.add(item);
             currentRoom.removeItem(item);
             System.out.println("Has cogido " + item.getId());
             pesoActual += item.getPesoItem();
+        } else if (item != null && item.getAdquirible() && (pesoActual + item.getPesoItem()) > pesoMax) {    
+            System.out.println("Llevas demasiado peso encima, no puedes coger ese objeto.");
         } else if (item != null &&!item.getAdquirible()) {
             System.out.println("No puedes coger ese objeto, de momento...");
         } else if (item == null) {
@@ -130,7 +134,7 @@ public class Player
             for (Item item : inventario) {
                 System.out.println(item.getItemInfo());
             }
-            System.out.println("Peso total: " + pesoActual);
+            System.out.println("Peso total: " + pesoActual + "/" + pesoMax);
         }
     }
 
@@ -141,19 +145,20 @@ public class Player
      * @param command   El comando que se ha introducido
      */
     public void drop(Command command) {
-        Item item = null;
+        boolean comprobador = false;
 
         if (!inventario.isEmpty()) {
-            for (int i = 0; i < inventario.size() && item == null; i++) {
-                item = inventario.get(i);
+            for (int i = 0; i < inventario.size() && !comprobador; i++) {
+                Item item = inventario.get(i);
                 if (item.getId().equals(command.getSecondWord())) {
                     currentRoom.addItem(item);
                     inventario.remove(item);
                     pesoActual -= item.getPesoItem();
                     System.out.println(item.getId() + " se ha dejado en la sala.");
+                    comprobador = true;
                 }
             }
-            if (item == null) {
+            if (!comprobador) {
                 System.out.println("¡No tienes ese objeto!");
             }
         } else {
