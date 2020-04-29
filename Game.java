@@ -21,7 +21,7 @@ public class Game
 {
     private Parser parser;
     private Player jugador;
-    
+
     /**
      * Create the game and initialise its internal map.
      */
@@ -55,13 +55,13 @@ public class Game
         pasilloSecreto = new Room("un pasillo secreto al noreste de la mazmorra");
 
         // Creamos los objetos
-        Item cuchillo = new Item("cuchillo", "Un cuchillo de cocina", 1);
-        Item behelit = new Item("behelit", "Extraño amuleto que te provoca escalofríos", 1);
+        Item cuchillo = new Item("cuchillo", "Un cuchillo de cocina", 1, false);
+        Item behelit = new Item("behelit", "Extraño amuleto que te provoca escalofríos", 1, true);
         behelit.setAdquirible(false);
-        Item cartaInculpatoria = new Item("cartaInculpatoria", "Carta sospechosa encontrada en los aposentos del Capitán de la Guardia Real", 1);
-        Item vendasEnsangrentadas = new Item("vendasEnsangrentadas", "Vendas empapadas en sangre encontradas en los baños", 2);
-        Item anillo = new Item("anillo", "Anillo de oro con un rubí incrustado", 1);
-        Item ganzua = new Item("ganzua", "Herramienta para abrir cerraduras", 1);
+        Item cartaInculpatoria = new Item("cartaInculpatoria", "Carta sospechosa encontrada en los aposentos del Capitán de la Guardia Real", 1, false);
+        Item vendasEnsangrentadas = new Item("vendasEnsangrentadas", "Vendas empapadas en sangre encontradas en los baños", 2, false);
+        Item anillo = new Item("anillo", "Anillo de oro con un rubí incrustado", 1, true);
+        Item ganzua = new Item("ganzua", "Herramienta para abrir cerraduras", 1, true);
 
         // Y ahora los añadimos a sus salas correspondientes
         patio.addItem(ganzua);
@@ -97,7 +97,7 @@ public class Game
         aposentosCapGuardiaReal.setExit("southEast", salaDelTrono);
         // Salidas del pasillo secreto
         pasilloSecreto.setExit("southWest", mazmorra);
-        
+
         // El juego comienza en el patio
         return patio;
     }
@@ -175,6 +175,9 @@ public class Game
         else if (commandWord.equals("drop")) {
             jugador.drop(command);
         }
+        else if (commandWord.equals("equip")) {
+            jugador.equip(command);
+        }
 
         return wantToQuit;
     }
@@ -194,8 +197,6 @@ public class Game
         System.out.println("Your command words are:");
         System.out.println(parser.showCommands());
     }
-
-    
 
     /** 
      * "Quit" was entered. Check the rest of the command to see

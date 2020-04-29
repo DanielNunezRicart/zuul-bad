@@ -16,7 +16,7 @@ public class Player
     private ArrayList<Item> inventario;
     private int pesoActual;
     private int pesoMax;
-    
+
     /**
      * Constructor de la clase Player
      */
@@ -145,24 +145,97 @@ public class Player
      * @param command   El comando que se ha introducido
      */
     public void drop(Command command) {
-        boolean comprobador = false;
-
         if (!inventario.isEmpty()) {
-            for (int i = 0; i < inventario.size() && !comprobador; i++) {
-                Item item = inventario.get(i);
-                if (item.getId().equals(command.getSecondWord())) {
-                    currentRoom.addItem(item);
-                    inventario.remove(item);
-                    pesoActual -= item.getPesoItem();
-                    System.out.println(item.getId() + " se ha dejado en la sala.");
-                    comprobador = true;
-                }
-            }
-            if (!comprobador) {
+            if (hasItem(command.getSecondWord())) {
+                Item item = getItemInventario(command.getSecondWord());
+                currentRoom.addItem(item);
+                inventario.remove(item);
+                pesoActual -= item.getPesoItem();
+                System.out.println(item.getId() + " se ha dejado en la sala.");
+            } else {
                 System.out.println("¡No tienes ese objeto!");
             }
         } else {
             System.out.println("¡No tienes objetos!");
+        }
+    }
+
+    /**
+     * Método que permite usar el comando equip. El jugador se equipará el objeto pasado por parámetro.
+     * 
+     * @param command   El comando que se ha introducido
+     */
+    public void equip(Command command) {
+        if (hasItem(command.getSecondWord())) {
+            Item item = getItemInventario(command.getSecondWord());
+
+            if (item.getEquipable() && !item.getEquiped()) {
+                item.setEquiped(true);
+                System.out.println("Se ha equipado " + item.getId() + ".");
+
+                // Ya que de momento sólo hay un objeto que podamos realmente equiparnos, aplicaremos aquí los efectos.
+                if (getItemInventario("anillo").getEquiped()) {
+                    pesoMax += 5;
+                }
+            } else if (item.getEquipable() && item.getEquiped()) {
+                System.out.println("Ya te has equipado ese objeto.");
+            } else {
+                System.out.println("No puedes equiparte este objeto.");
+            }
+        } else {
+            System.out.println("¡No puedes equiparte objetos que no tienes!");
+        }
+    }
+
+    /**
+     * Método que comprueba si el jugador tiene un item concreto en 
+     * su inventario. Se le pasa el id de dicho item por parámetro.
+     * 
+     * @param idItem    String que contiene el id del item que estamos buscando.
+     * @return  Booleano que indica si el jugador tiene el item en el inventario (true), o si no lo tiene (false).
+     */
+    public boolean hasItem(String idItem) {
+        boolean resultado = false;
+
+        for (int i = 0; i < inventario.size() && !resultado; i++) {
+            Item item = inventario.get(i);
+            if (item.getId().equals(idItem)) {
+                resultado = true;
+            }
+        }
+
+        return resultado;
+    }
+
+    /**
+     * Método que nos devuelve un item cuyo id le hemos pasado como parámetro, siempre y cuando lo tengamos en nuestro inventario.
+     * Sólo debe invocarse si previamente, se ha ejecutado el método hasItem() con resultado true.
+     * 
+     * @param idItem    String que contiene el id del item que estamos buscando.
+     * @return  El item que estamos buscando.
+     */
+    public Item getItemInventario(String idItem) {
+        int contador = -1;
+
+        for (int i = 0; contador < 0; i++) {
+            if (inventario.get(i).getId().equals(idItem)) {
+                contador = i;
+            }
+        }
+
+        return inventario.get(contador);
+    }
+
+    /**
+     * Método que añade o resta el número pasado por parámetro al peso máximo.
+     * 
+     * @param cambio    int que indica el valor a sumar o restar al peso máximo.
+     */
+    public void changePesoMax(int cambio) {
+        if (cambio > 0) {
+            pesoMax += cambio;
+        } else {
+            pesoMax -= cambio;
         }
     }
 }
